@@ -12,4 +12,13 @@ public class StudentDto {
     private String groupName;
     private Integer groupId;
     private Integer facultyId;
+
+//    {"firstName":"Lazizbek",
+//            "city":"Karshi",
+//            "district":"Koson",
+//            "street":"Nasaf",
+//            "groupName":"B1",
+//            "groupId":1,
+//            "facultyId":1
+//    }
 }

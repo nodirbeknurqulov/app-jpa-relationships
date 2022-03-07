@@ -108,7 +108,7 @@ public class StudentController {
         group.setName(studentDto.getGroupName());
 
         Optional<Group> optionalGroup = groupRepository.findById(studentDto.getGroupId());
-        if (!optionalGroup.isPresent()){
+        if (!optionalGroup.isPresent()) {
             return "Group not found!!!";
         }
         Group selectedGroup = optionalGroup.get();
@@ -123,4 +123,43 @@ public class StudentController {
         return "Student added!";
     }
 
+    ///////////////////////////////// UPDATE STUDENT ////////////////////////////////////////
+    @PutMapping("/{id}")
+    public String editStudent(@PathVariable Integer id, @RequestBody StudentDto studentDto) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            student.setFirstName(studentDto.getFirstName());
+
+            Address address = new Address();
+            address.setCity(studentDto.getCity());
+            address.setDistrict(studentDto.getDistrict());
+            address.setStreet(studentDto.getStreet());
+            Address savedAddress = addressRepository.save(address);
+            student.setAddress(savedAddress);
+
+            Optional<Group> optionalGroup = groupRepository.findById(studentDto.getGroupId());
+            if (!optionalGroup.isPresent()) {
+                return "Group not found!!!";
+            }
+            Group selectedGroup = optionalGroup.get();
+            Group savedGroup = groupRepository.save(selectedGroup);
+            student.setGroup(savedGroup);
+            studentRepository.save(student);
+            return "Student updated!!!";
+        }
+        return "Student not found!";
+    }
+
+    ///////////////////////////////// DELETE STUDENT ////////////////////////////////////////
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable Integer id) {
+        try {
+            studentRepository.deleteById(id);
+            return "Student deleted!";
+        } catch (Exception e) {
+            return "Error in deleting!";
+        }
+
+    }
 }
